@@ -9,6 +9,14 @@ from drawnow import *
 dhtSensor = adafruit_dht.DHT22(board.D4)
 app = Flask(__name__)
 
+@app.route ('/realtime')
+def rl ():
+	temperature, humidity = sensor_readings()
+	return {
+		temperature: temperature,
+		humidity: humidity
+	}
+
 @app.route('/')
 def index():
 	temperature, humidity = sensor_readings()
