@@ -3,6 +3,7 @@ import matPlotLib as plt
 from drawNow import *
 
 tempF = []
+humidity = []
 plt.ion()
 
 def makeFig():
