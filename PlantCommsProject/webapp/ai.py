@@ -12,7 +12,9 @@ import json
 import requests
 from app import sensor_readings 
 
-engine=pyttsx3.init() 
+engine=pyttsx3.init()
+#engine.setProperty('rate',100)
+engine.setProperty('volume',1) 
 voices=engine.getProperty('voices')
 engine.setProperty('voice', 'voices[0].id')
 
@@ -20,8 +22,10 @@ def speak(text):
 	"""
 	This function converts string text into speech
 	"""
+	
 	engine.say(text)
 	engine.runAndWait()
+	
 
 def acceptCommand():
 	r=sr.Recognizer()
@@ -39,8 +43,11 @@ def acceptCommand():
 def getPlantData():
 	temperature, humidity = sensor_readings()
 	return f"The Temperature is {temperature} and the Humidity is {humidity}"
-#print("hello 1")
-#print(getPlantData())
-print("Hello")
-print("This code is actually running...")
+
+print(getPlantData())
+
+
+speak("Hello, I am speaking!")
+speak("Please state command")
 print(acceptCommand())
+
