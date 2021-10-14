@@ -1,31 +1,63 @@
 <!-- Using d3.JS v4 & JQuery (any ver.) -->
-<script src="https://d3js.org/d3.v4.js"></script> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<head>
+	
+	<script src="https://d3js.org/d3.v4.js"></script> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<link rel= "stylesheet" type= "text/css" href= "/static/style.css">
+
+</head>
 
 <!-- 
 	The HTML being displayed 
 	This is the front-end to eventually be worked on
 -->
-<div class="jumbotron jumbotron-fluid">
-	<div class="container">
-		<h1 class="display-4">Sensor Data Live</h1>
-		<br><br>
-		<h3 class="temp">Temperature: <strong id="temp"> 0 </strong> F </h3>
-		<h3 class="hum">Humidity: <strong id="hum"> 0 </strong> % </h3>
 
-		<br><br>
+
+<body>
+	<div class="main_container">
+		<h1 class="display-4">Plant Pi Person</h1>
+
+		<br>
+
+		<div class="display">
+			<h3 class="temp">Temperature: <strong id="temp"> 0 </strong> F </h3>
+			<h3 class="hum">Humidity: <strong id="hum"> 0 </strong> % </h3>
+		</div>
+
+		<br>
 
 		<!-- 
 			The temperature graph 
 			Temperature & Humidity graphs are filled in by the d3.js code
 		-->
-		<div id="temperature_viz"></div>
+		<div class="container">
 
-		<!-- The humidity graph -->
-		<div id="humidity_viz"></div>
+			<div class="viz">
+				<p>Temperature</p>
+				<div id="temperature_viz"></div>
+			</div>
+
+			<!-- The humidity graph -->
+			<div class="viz">
+				<p>Humidity</p>
+				<div id="humidity_viz"></div>
+			</div>
+
+			<div class="info"> 
+
+				aaa
+				a
+				<br>
+				aa
+
+			</div>
+
+		</div>
 
 	</div>
-</div>
+<body>
 
 <script>
 
@@ -35,9 +67,13 @@
 	// Graph class to instantiate a new graph in d3.js
 	class Graph {
 
-		constructor (viz) {
+		// Viz is the specific graph, max and min are the numbers to display for the maximum and minmum
+		constructor (viz, max, min) {
+
+			this.viz = viz;
 
 			this.len = 15; // the interval at which the graph goes
+			var len = this.len
 
 			// set the dimensions and margins of the graph
 			var margin = {top: 10, right: 30, bottom: 30, left: 60},
@@ -47,16 +83,18 @@
 			// append the svg object to the body of the page
 			// The SVG is a container object for the data visualization
 			this.svg = d3.select(`#${viz}`)
-			.append("svg")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
-			.append("g")
-				.attr("transform",
-					"translate(" + margin.left + "," + margin.top + ")");
+				.append("svg")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+					.attr("transform",
+						"translate(" + margin.left + "," + margin.top + ")");
+
+			// console.log (width)
 
 			// x axis 	
 			this.x = d3.scaleLinear()
-				.domain([0, d3.max(data, function(d) { return this.len; })])
+				.domain([0, d3.max(data, function(d) { return len; })])
 				.range([ 0, width ]);
 			this.svg.append("g")
 				.attr("transform", "translate(0," + height + ")")
@@ -64,7 +102,7 @@
 
 			// Add Y axis
 			this.y = d3.scaleLinear()
-				.domain([50, d3.max(data, function(d) { return 100; })])
+				.domain([min, d3.max(data, function(d) { return max; })])
 				.range([ height, 0 ]);
 			this.svg.append("g")
 				.call(d3.axisLeft(this.y));
@@ -74,6 +112,16 @@
 		// Returns the SVG to append the line
 		getSVG () {
 			return this.svg;
+		}
+
+		getX () {
+			return this.x;
+		}
+		getY () {
+			return this.y;
+		}
+		getLen () {
+			return this.len;
 		}
 
 	}
@@ -93,11 +141,12 @@
 		document.cookie.split('|').forEach (e => {
 			let t = e.split(',')
 
+			// If the number is valid, append it
 			if (!isNaN(t[0]) && !isNaN(t[1]) && !isNaN(t[2]))
 				d.push({
 					index: t[0],
-					temperature: t[1],
-					humidity: t[2]
+					temperature: parseInt(t[1]),
+					humidity: parseInt(t[2])
 				})
 
 		}) 
@@ -108,10 +157,6 @@
 	}
 
 	var data = []
-
-	// Instantiates the temperature & humidity graphs
-	let temp = new Graph("temperature_viz")
-	let hum = new Graph("humidity_viz")
 
 	// If there is no cookie, then append a starting point
 	if (cookieLength() == 0)
@@ -127,80 +172,102 @@
 		return document.cookie.split('|').length
 	}
 
+	// Instantiates the temperature & humidity graphs
+	let temp = new Graph("temperature_viz",  95, 45)
+	let hum = new Graph("humidity_viz", 80, 30)
+
+	// Selects the specific part of the data object to get, whether thats humidity or temperature
+	function select (viz, d) {
+		// console.log (viz)
+		if (viz == 'humidity_viz') {
+			return d.humidity;
+		}
+		else
+			return d.temperature
+	}
+
+	// Appends to an individual graph the specific piece of data necessary
+	function append (graph) {
+		// If the data is longer than the graph's length, get the latest data
+		if (data.length > graph.len) {
+
+			// removes all paths/points on the graph
+			graph.getSVG().selectAll("path").remove();
+
+			let c_data = []
+
+			// loops through the final [len] data points on the graph
+			// t is the inde on the data and ii is the inde on the graph
+			for (let t = data.length-1, ii = graph.len; t > data.length-graph.len-1; t--, ii--) {
+
+				data[t].index = ii
+				c_data.push(data[t])
+
+			}
+
+			c_data = c_data.reverse()
+
+			console.log (c_data)
+
+			// !! Currently data being fed is NaN, most likely because of the temp.x and temp.y functions being in the class
+			// Looking into fixing it
+
+			// console.log (temp.getSVG())
+
+			// Appends a node to the linear function
+			graph.getSVG().append("path")
+					.datum(c_data)
+					.attr("fill", "none")
+					.attr("stroke", "steelblue")
+					.attr("stroke-width", 1.5)
+					.attr("d", d3.line()
+						.x(function(d) { return graph.getX()( d.index ) })
+						.y(function(d) { return graph.getY()( select( graph.viz, d ) ) })
+					)
+		}
+		// Otherwise, continue adding to the data until it hits the length cap
+		else {
+
+			graph.getSVG().selectAll("path").remove();
+
+			let c_data = []
+
+			for (let t = 0; t < data.length; t++) {
+
+				data[t].index = t
+				c_data.push(data[t])
+
+			}
+
+			// Appends a node
+			graph.getSVG().append("path")
+				.datum(c_data)
+				.attr("fill", "none")
+				.attr("stroke", "steelblue")
+				.attr("stroke-width", 1.5)
+				.attr("d", d3.line()
+					.x(function(d) { return graph.getX()( d.index ) })
+					.y(function(d) { return graph.getY()( select( graph.viz, d ) ) })
+				)
+		}
+	}
+
 	// Sets an interval every half a second or so to get from the realtime API to append new values to the data visualizations
 	setInterval(() => {
 		$.get(
 			"/realtime", // The API endpoint is /realtime
-			function(d, e) {
+			function(_d, e) {
 
 				// Sets the temperature & humidity elements to the latest temperature & humidity
-				document.getElementById('temp').innerHTML = d.temperature
-				document.getElementById('hum').innerHTML = d.humidity
+				document.getElementById('temp').innerHTML = _d.temperature
+				document.getElementById('hum').innerHTML = _d.humidity
 
-				data.push(d) // adds to the data array array
+				data.push(_d) // adds to the data array array
 
 				setCookie(data) // Updates the cookie
 
-				// If the data is longer than the graph's length, get the latest data
-				if (data.length > temp.len) {
-
-					// removes all paths/points on the graph
-					d3.selectAll("path").remove();
-
-					let c_data = []
-
-					// loops through the final [len] data points on the graph
-					// t is the inde on the data and ii is the inde on the graph
-					for (let t = data.length-1, ii = temp.len; t > data.length-temp.len-1; t--, ii--) {
-
-						data[t].index = ii
-						c_data.push(data[t])
-
-					}
-
-					c_data = c_data.reverse()
-
-					console.log (c_data)
-
-					// !! Currently data being fed is NaN, most likely because of the temp.x and temp.y functions being in the class
-					// Looking into fixing it
-
-					// Appends a node to the linear function
-					temp.getSVG().append("path")
-							.datum(c_data)
-							.attr("fill", "none")
-							.attr("stroke", "steelblue")
-							.attr("stroke-width", 1.5)
-							.attr("d", d3.line()
-								.x(function(d) { return temp.x( d.index ) })
-								.y(function(d) { return temp.y( d.temperature ) })
-							)
-				}
-				// Otherwise, continue adding to the data until it hits the length cap
-				else {
-
-					d3.selectAll("path").remove();
-
-					let c_data = []
-
-					for (let t = 0; t < data.length; t++) {
-
-						data[t].index = t
-						c_data.push(data[t])
-
-					}
-
-					// Appends a node
-					temp.getSVG().append("path")
-						.datum(c_data)
-						.attr("fill", "none")
-						.attr("stroke", "steelblue")
-						.attr("stroke-width", 1.5)
-						.attr("d", d3.line()
-							.x(function(d) { return temp.x( d.index ) })
-							.y(function(d) { return temp.y( d.temperature ) })
-						)
-				}
+				append(temp); // appends to temp
+				append(hum); // appends to humidity
 
 			}
 		);

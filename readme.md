@@ -6,7 +6,7 @@
 
 Created for Fall 2021 Computer Science Research @ [Peddie School](https://www.peddie.org/)
 
-[Trello Link](https://trello.com/b/J3Io1G6m/raspberry-pi-plant-project)
+* [Trello Link](https://trello.com/b/J3Io1G6m/raspberry-pi-plant-project)
 
 ## Goals
 

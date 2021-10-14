@@ -5,8 +5,7 @@ from flask import Flask, render_template, send_from_directory, jsonify
 
 from opensimplex import OpenSimplex # OpenSimplex is a function emulating Perlin noise
 
-noise_temp = OpenSimplex()
-noise_humidity = OpenSimplex()
+noise = OpenSimplex()
 
 noise_i = 0 # The index for the perlin noise
 
@@ -14,10 +13,13 @@ app = Flask(__name__)
 
 noises = [] 
 
+def randomize (t):
+	return (t-2)*2
+
 # Gets a noise value roughly between 68 and 72
 def getNoise ():
     global noise_i
-    return  noise_i, int(noise_temp.noise2d(noise_i, 0)*4+70), int(noise_humidity.noise2d(noise_i, 0))
+    return  noise_i, int(noise.noise2d(noise_i, 0)*4+70), int(noise.noise2d(randomize(noise_i), 0)*4+55)
 
 # realtime endpoint API
 @app.route ('/realtime')
