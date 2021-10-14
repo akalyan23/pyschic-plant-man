@@ -47,14 +47,17 @@
 
 			<div class="info"> 
 
-				aaa
-				a
-				<br>
-				aa
+				<h3>Past Messages</h3>
+				<hr>
+
+				<p>This is a message from your lovely plant</p>
+				<p>Please feed me more water :((</p>
 
 			</div>
 
 		</div>
+
+		<div class="dirt"> </div>
 
 	</div>
 <body>
@@ -98,7 +101,7 @@
 				.range([ 0, width ]);
 			this.svg.append("g")
 				.attr("transform", "translate(0," + height + ")")
-				.call(d3.axisBottom(this.x));
+				// .call(d3.axisBottom(this.x));
 
 			// Add Y axis
 			this.y = d3.scaleLinear()
@@ -176,6 +179,8 @@
 	let temp = new Graph("temperature_viz",  95, 45)
 	let hum = new Graph("humidity_viz", 80, 30)
 
+	d3.selectAll("path").remove();
+
 	// Selects the specific part of the data object to get, whether thats humidity or temperature
 	function select (viz, d) {
 		// console.log (viz)
@@ -218,8 +223,8 @@
 			graph.getSVG().append("path")
 					.datum(c_data)
 					.attr("fill", "none")
-					.attr("stroke", "steelblue")
-					.attr("stroke-width", 1.5)
+					.attr("stroke", "black")
+					.attr("stroke-width", 1.75)
 					.attr("d", d3.line()
 						.x(function(d) { return graph.getX()( d.index ) })
 						.y(function(d) { return graph.getY()( select( graph.viz, d ) ) })
