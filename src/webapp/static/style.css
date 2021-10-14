@@ -52,8 +52,13 @@ h1 {
 }
 
 .info p::before {
+
     content: "• ";
     font-weight: 700;
+}
+.info p {
+    text-indent: -1.25rem;
+    margin-left: 1.5rem;
 }
 
 @media (orientation: landscape) {

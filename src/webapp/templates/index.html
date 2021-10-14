@@ -45,13 +45,12 @@
 				<div id="humidity_viz"></div>
 			</div>
 
-			<div class="info"> 
+			<div class="info" id='info'> 
 
 				<h3>Past Messages</h3>
 				<hr>
 
-				<p>This is a message from your lovely plant</p>
-				<p>Please feed me more water :((</p>
+				
 
 			</div>
 
@@ -66,6 +65,23 @@
 
 	// Skye Kychenthal
 	// Uses D3.JS & a custom API endpoint to update data visualizations 
+
+	var messages = [
+		"Suffering",
+		"Goodbye world...",
+		"I'm dying, please, I'm withering away and desperate for water",
+		"Please feed me more water :((",
+		"I'd love some water :)",
+		"This is a message from your lovely plant",
+	]
+
+	messages.forEach (m => {
+		console.log (m)
+		document.getElementById("info").innerHTML += 
+		`
+			<p>${m}</p>
+		`
+	})
 
 	// Graph class to instantiate a new graph in d3.js
 	class Graph {
