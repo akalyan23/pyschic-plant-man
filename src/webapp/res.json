@@ -1,0 +1,10 @@
+{
+
+    "commands": [
+        { 
+            "res": ["I am burning up please help", "Fireeeeee"],
+            "trigger": ["feeling", "fire", "burn"]
+        }
+    ]
+
+}
