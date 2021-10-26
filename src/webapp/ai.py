@@ -12,7 +12,7 @@ import json
 # import wolframalpha
 # import json
 # import requests
-from app import sensor_readings 
+# from app import sensor_readings 
 	# The line above NEEDS to be uncommented. DO NOT push this version. 
 
 engine=pyttsx3.init()
@@ -20,6 +20,8 @@ engine=pyttsx3.init()
 engine.setProperty('volume',1) 
 voices=engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
+
+r=sr.Recognizer()
 
 # Skye Kychenthal
 # Loads a random name
@@ -38,8 +40,30 @@ def loadUser():
 # There is a array of triggers, if any of them are heard the "res" response is given
 # IE if the trigger is hello and the res is "hi, how are you?" when it hears hello it will respond with the res
 def loadCommands ():
-	return json.load (open("res.json"))["commands"]
+	dr = "/Users/Nick/Desktop/pyschic-plant-man/src/webapp/res.json"
+	# dr = "res.json"
+	return json.load (open(dr))["commands"]
 
+# Skye Kychenthal
+# checks for variables in a trigger-res response
+# A variable takes the shape of $name and the $name is replaced with the variable in the response
+def checkForVar (t):
+	vs = t.split("$")[1].split(' ')[0] # VS is every single variable name that starts with a $
+	for v in vs:
+		if (v == "temp"):
+			temp = 70
+			addition = ""
+
+			# Adds another message on top if the plant is too hot or too cold
+			# Numbers are arbitrary for now
+			if (temp > 80):
+				addition = "I am really hot."
+			elif (temp < 50):
+				addition = "I am freezing."
+
+			return t.replace('$temp', temp)+addition # Replaces the var name with the temp variable in the response
+
+	return t
 
 def speak(text):
 	"""
@@ -49,11 +73,11 @@ def speak(text):
 	engine.say(text)
 	engine.runAndWait()
 	
-cmds = loadCommands()
-print (cmds)
+cmds = loadCommands() # short for commands
 
-def acceptCommand():
-	r=sr.Recognizer()
+# Rohan Nunuganda
+# Rohan please comment
+async def acceptCommand():
 	with sr.Microphone() as source:
 		print('Listening...') #Should replace this with an audio queue to let the user know that the ai is listening
 		audio=r.listen(source, None, 2)
@@ -74,16 +98,15 @@ def acceptCommand():
 				for c in cmds: #looks at all command pairs in the cmds structure
 					for t in c['trigger']: # iterates through all triggers for the command
 						if t in usercommand: # t is the specific trigger for the a response
-							print (c['res'])
-							return speak (choice(c['res']))
+							msg = checkForVar(choice(c['res']))
+							msgs.append(msg)
+							return speak (msg) # Speaks then returns so no more responses trigger. Checks for variables using checkForVar
 		
 		except Exception as e:
 			print(e)
 			speak("I couldn't understand you, may you please repeat?")
-			return "None"
-		return usercommand
-
-
+			return 0
+		return 0
 
 # def getPlantData():
 # 	temperature, humidity = sensor_readings()
@@ -91,8 +114,5 @@ def acceptCommand():
 
 #print(getPlantData())
 
-
-speak(f"Hello {loadUser()}, {loadName()} is now speaking!")
-speak("How would I help you?")
-acceptCommand()
+# acceptCommand()
 

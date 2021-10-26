@@ -5,6 +5,17 @@ from flask import Flask, render_template, send_from_directory, jsonify
 
 from opensimplex import OpenSimplex # OpenSimplex is a function emulating Perlin noise
 
+import threading
+
+import asyncio
+
+msgs = []
+
+import ai
+
+# ai.speak(f"Hello {ai.loadUser()}, {ai.loadName()} is now speaking!")
+# ai.speak("How would I help you?")
+
 noise = OpenSimplex()
 
 noise_i = 0 # The index for the perlin noise
@@ -20,6 +31,10 @@ def randomize (t):
 def getNoise ():
     global noise_i
     return  noise_i, int(noise.noise2d(noise_i, 0)*4+70), int(noise.noise2d(randomize(noise_i), 0)*4+55)
+
+@app.route ('/msgs')
+def messages ():
+	return jsonify(m=msgs)
 
 # realtime endpoint API
 @app.route ('/realtime')
@@ -57,5 +72,11 @@ def index():
 	# i, temperature, humidity = getNoise()
 	return send_from_directory('templates', "index.html")
 
+
+async def main ():
+	asyncio.run(ai.acceptCommand())
+	print ("MEOW")
+	return 0
+
 if __name__ == "__main__":
-	app.run()
+	main()

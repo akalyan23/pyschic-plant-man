@@ -4,6 +4,10 @@
         { 
             "res": ["I am burning up please help", "Fireeeeee"],
             "trigger": ["feeling", "fire", "burn"]
+        },
+        {
+            "res": ["I am $temp degrees"],
+            "trigger": ["temperature", "temp"]
         }
     ]
 

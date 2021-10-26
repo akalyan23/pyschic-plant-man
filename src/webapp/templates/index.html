@@ -66,22 +66,33 @@
 	// Skye Kychenthal
 	// Uses D3.JS & a custom API endpoint to update data visualizations 
 
-	var messages = [
-		"Suffering",
-		"Goodbye world...",
-		"I'm dying, please, I'm withering away and desperate for water",
-		"Please feed me more water :((",
-		"I'd love some water :)",
-		"This is a message from your lovely plant",
-	]
+	// var messages = [
+	// 	"Suffering",
+	// 	"Goodbye world...",
+	// 	"I'm dying, please, I'm withering away and desperate for water",
+	// 	"Please feed me more water :((",
+	// 	"I'd love some water :)",
+	// 	"This is a message from your lovely plant",
+	// ]
+	setTimeout(() => {
+		
+		$.get(
+			"/msgs", // The API endpoint is /realtime
+			function(d, e) {
 
-	messages.forEach (m => {
-		console.log (m)
-		document.getElementById("info").innerHTML += 
-		`
-			<p>${m}</p>
-		`
-	})
+				// data -> messages -> foreach
+				d.m.forEach (m => {
+					console.log (m)
+					document.getElementById("info").innerHTML += 
+					`
+						<p>${m}</p>
+					`
+				})
+
+			}
+		);
+
+	}, 750);
 
 	// Graph class to instantiate a new graph in d3.js
 	class Graph {
