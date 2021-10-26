@@ -28,6 +28,7 @@ def sensor_readings():
 			humidity = dhtSensor.humidity
 			temp_c = dhtSensor.temperature
 		except RuntimeError:
+			print(dhtSensor.humidity, dhtSensor.temperature)
 			print("Error, trying again...")
 			continue
 		break

@@ -29,25 +29,36 @@ def speak(text):
 
 def acceptCommand():
 	r=sr.Recognizer()
-	with sr.Microphone() as source:
-		print('Listening...') #Should replace this with an audio queue to let the user know that the ai is listening
-		audio=r.listen(source)
+	mic = sr.Microphone(device_index=2)
+	with mic as source:
+		print (source)
+		speak("I'm Listening. Please state your command") #Should replace this with an audio queue to let the user know that the ai is listening
+		print("Listening...")
+		audio=r.listen(source, None, 4)
 
 		try:
 			usercommand=r.recognize_google(audio,language="en-US")
 			print(f"user said: {usercommand}\n") #This is just for debugging right now. Prints in the terminal the user's command.
+			if "feeling" in usercommand:
+				if getPlantData.temperature > 60 and getPlantData.temperature < 80:
+					speak("I'm doing just fine sir. Thank you!")
+				elif getPlantData.temperature > 80:
+					speak("I'm dying, please help")
+				elif getPlantData.temperature < 60:
+					speak("Warm me up, please")
+			
 		except Exception as e:
 			speak("I couldn't understand you, may you please repeat?")
 			return "None"
 		return usercommand
 def getPlantData():
 	temperature, humidity = sensor_readings()
-	return f"The Temperature is {temperature} and the Humidity is {humidity}"
+	print(f"The Temperature is {temperature} and the Humidity is {humidity}")
+	return float(temperature), float(humidity)
 
 print(getPlantData())
 
 
-speak("Hello, I am speaking!")
-speak("Please state command")
+
 print(acceptCommand())
 
