@@ -44,6 +44,7 @@ def checkForVar (t):
 	return t
 
 cmds = loadCommands() # short for commands
+print(cmds)
 
 def speak(text):
 	"""
@@ -61,7 +62,9 @@ def acceptCommand():
 	with mic as source:
 		print('Listening...') #Should replace this with an audio queue to let the user know that the ai is listening
 		audio=r.listen(source, None, 4)
+		print("made it here")
 		try:
+			print("Made it into the try statement")
 			usercommand=r.recognize_google(audio,language="en-US")
 			print(f"user said: {usercommand}\n") #This is just for debugging right now. Prints in the terminal the user's command.
 			
@@ -87,11 +90,16 @@ def acceptCommand():
 				# Skye Kychenthal
 				# Iterates through commands and speaks the in to out values
 				for c in cmds: #looks at all command pairs in the cmds structure
+					#print("c" + c)
+					print(c['trigger'])
 					for t in c['trigger']: # iterates through all triggers for the command
+						#print(t)
+						print(t in usercommand)
 						if t in usercommand: # t is the specific trigger for the a response
-							msg = checkForVar(choice(c['res']))
+							msg = choice(c['res'])
+							print(msg)
 							# msgs.append(msg)
-							return speak (msg) # Speaks then returns so no more responses trigger. Checks for variables using checkForVar
+							speak(msg) # Speaks then returns so no more responses trigger. Checks for variables using checkForVar
 
 		except Exception as e:
 			print(e)
