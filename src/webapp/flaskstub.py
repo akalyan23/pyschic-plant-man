@@ -11,7 +11,7 @@ import asyncio
 
 msgs = []
 
-import ai
+#import ai
 
 # ai.speak(f"Hello {ai.loadUser()}, {ai.loadName()} is now speaking!")
 # ai.speak("How would I help you?")
@@ -73,8 +73,9 @@ def index():
 	return send_from_directory('templates', "index.html")
 
 
-async def main ():
-	asyncio.run(ai.acceptCommand())
+def main ():
+	#asyncio.run(ai.acceptCommand())
+	app.run()
 	print ("MEOW")
 	return 0
 

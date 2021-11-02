@@ -25,23 +25,23 @@ r=sr.Recognizer()
 
 # Skye Kychenthal
 # Loads a random name
-#def loadName ():
-#	return choice([
-#		"joe", "rohan", "skye", "intercontinental ballistic missile", "wolfe", "advaith", "bao", "sruti", "god", "plant", "planty mc plant face"
-#	])
+def loadName ():
+	return choice([
+		"joe", "rohan", "skye", "intercontinental ballistic missile", "wolfe", "advaith", "bao", "sruti", "god", "plant", "planty mc plant face"
+	])
 
 # Skye Kychenthal
 # Loads the users name
-#def loadUser():
-#	return "rohan"
+def loadUser():
+	return "rohan"
 
 # Skye Kychenthal
 # Loads commands from a JSON 
 # There is a array of triggers, if any of them are heard the "res" response is given
 # IE if the trigger is hello and the res is "hi, how are you?" when it hears hello it will respond with the res
 def loadCommands ():
-	#dr = "/Users/Nick/Desktop/pyschic-plant-man/src/webapp/res.json"
-	dr = "res.json"
+	dr = "/Users/Nick/Desktop/pyschic-plant-man/src/webapp/res.json"
+	# dr = "res.json"
 	return json.load (open(dr))["commands"]
 
 # Skye Kychenthal
@@ -75,21 +75,19 @@ def speak(text):
 	
 cmds = loadCommands() # short for commands
 
-#def acceptCommand():
-#	r=sr.Recognizer()
-#	mic = sr.Microphone(device_index=2)
-#	with mic as source:
-#		print (source)
-#		speak("I'm Listening. Please state your command") #Should replace this with an audio queue to let the user know that the ai is listening
-#		print("Listening...")
-#		audio=r.listen(source, None, 4)
-
-# Rohan Nunuganda
-# Rohan please comment
 def acceptCommand():
 	r=sr.Recognizer()
 	mic = sr.Microphone(device_index=2)
 	with mic as source:
+		print (source)
+		speak("I'm Listening. Please state your command") #Should replace this with an audio queue to let the user know that the ai is listening
+		print("Listening...")
+		audio=r.listen(source, None, 4)
+
+# Rohan Nunuganda
+# Rohan please comment
+async def acceptCommand():
+	with sr.Microphone() as source:
 		print('Listening...') #Should replace this with an audio queue to let the user know that the ai is listening
 		audio=r.listen(source, None, 2)
 		try:
@@ -132,8 +130,8 @@ def acceptCommand():
 def getPlantData():
 	temperature, humidity = sensor_readings()
 	print(f"The Temperature is {temperature} and the Humidity is {humidity}")
-	return float(temperature), float(humidity)
-	return 0
+	return float(temperature), float(humi
+		return 0
 
 
 # def getPlantData():

@@ -13,12 +13,13 @@
 #print("done")
 
 import time
-import board
+import  board 
 import adafruit_bh1750
+import digitalio
+import busio
 
-i2c = board.I2C()
-sensor = adafruit_bh1750.BH1750(i2c)
-
+i2c_bus = busio.I2C(SCL, SDA)
+lightsensor = adafruit_bh1750.BH1750(i2c_bus, address=0x48)
 while True:
-	print("%.2f Lux" %  sensor.lux)
+	print("%.2f Lux" %  lightsensor.lux)
 	time.sleep(1)
