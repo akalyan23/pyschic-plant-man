@@ -8,6 +8,14 @@
         {
             "res": ["I am $temp degrees"],
             "trigger": ["temperature", "temp"]
+        },
+        {
+            "res": [
+                "buck blair", 
+                "blair sucks",
+                "ew blair, Pedide's better"
+            ],
+            "trigger": ["blair"]
         }
     ]
 

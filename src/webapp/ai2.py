@@ -13,6 +13,38 @@ engine=pyttsx3.init()
 voices=engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
 
+# Skye Kychenthal
+# Loads commands from a JSON 
+# There is a array of triggers, if any of them are heard the "res" response is given
+# IE if the trigger is hello and the res is "hi, how are you?" when it hears hello it will respond with the res
+def loadCommands ():
+	#dr = "/Users/Nick/Desktop/pyschic-plant-man/src/webapp/res.json"
+	dr = "res.json"
+	return json.load (open(dr))["commands"]
+
+# Skye Kychenthal
+# checks for variables in a trigger-res response
+# A variable takes the shape of $name and the $name is replaced with the variable in the response
+def checkForVar (t):
+	vs = t.split("$")[1].split(' ')[0] # VS is every single variable name that starts with a $
+	for v in vs:
+		if (v == "temp"):
+			temp = 70
+			addition = ""
+
+			# Adds another message on top if the plant is too hot or too cold
+			# Numbers are arbitrary for now
+			if (temp > 80):
+				addition = "I am really hot."
+			elif (temp < 60):
+				addition = "I am freezing."
+
+			return t.replace('$temp', temp)+addition # Replaces the var name with the temp variable in the response
+
+	return t
+
+cmds = loadCommands() # short for commands
+
 def speak(text):
 	"""
 	This function converts string text into speech
@@ -34,13 +66,13 @@ def acceptCommand():
 			print(f"user said: {usercommand}\n") #This is just for debugging right now. Prints in the terminal the user's command.
 			
 
-			if "feeling" in usercommand:
-				if getPlantTemperature() > 60 and getPlantTemperature() < 80:
-					speak("I'm doing just fine sir. Thank you!")
-				elif getPlantTemperature() > 80:
-					speak("I'm dying, please help")
-				elif getPlantTemperature() < 60:
-					speak("Warm me up, please")
+			# if "feeling" in usercommand:
+			# 	if getPlantTemperature() > 60 and getPlantTemperature() < 80:
+			# 		speak("I'm doing just fine sir. Thank you!")
+			# 	elif getPlantTemperature() > 80:
+			# 		speak("I'm dying, please help")
+			# 	elif getPlantTemperature() < 60:
+			# 		speak("Warm me up, please")
 			
 
 
@@ -50,7 +82,16 @@ def acceptCommand():
 				print(results)
 
 			# If none of the custom commands work, go to the chatbot commands
-		
+			# If none of the custom commands work, go to the chatbot commands
+			else:
+				# Skye Kychenthal
+				# Iterates through commands and speaks the in to out values
+				for c in cmds: #looks at all command pairs in the cmds structure
+					for t in c['trigger']: # iterates through all triggers for the command
+						if t in usercommand: # t is the specific trigger for the a response
+							msg = checkForVar(choice(c['res']))
+							# msgs.append(msg)
+							return speak (msg) # Speaks then returns so no more responses trigger. Checks for variables using checkForVar
 
 		except Exception as e:
 			print(e)
