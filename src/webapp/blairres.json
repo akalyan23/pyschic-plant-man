@@ -1,0 +1,42 @@
+{
+
+    "commands": [
+        {
+            "res": [
+                "blair? Hearing that word makes me want to vomit. Pedd e is a much more pleasing word.",
+                "blair hasn't won since 2013",
+                "Blair is the number 4 boarding school, pedd e is number three",
+                "blair? you mean that trash can over there?",
+                "blair is that place beyond hope, right?",
+                "blair? boring.",
+                "blair? win? ha ha ha ha ha ha. Don't make me laugh.",
+                "blair can't even make a talking plant",
+                "could blair make me?",
+                "I am a creation beyond blairs capabilities."
+            ],
+            "trigger": ["blair", "blair", "buck", "buch"]
+        }, 
+        {
+            "res": [
+                "you don't know the difference between a falcon and a chicken?",
+                "come on, you don't even have good jokes?",
+                "when will you have a new joke?",
+                "really? chicken? layme."
+            ],
+            "trigger": ["chicken"]
+        },
+        {
+            "res": [
+                "Seven peat!! Seven peat!!",
+                "Polio!! Polio!",
+                "No. more. ties.",
+                "It's the potter kelley cup"
+            ],
+            "trigger": [
+                "win", "peddie", "peat", "polio", "covid"
+            ]
+        }
+
+    ]
+
+}

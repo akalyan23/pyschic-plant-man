@@ -9,6 +9,7 @@
             "res": ["I am $temp degrees"],
             "trigger": ["temperature", "temp"]
         }
+
     ]
 
 }
