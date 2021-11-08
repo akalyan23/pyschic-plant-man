@@ -23,7 +23,9 @@
 
 		<div class="display">
 			<h3 class="temp">Temperature: <strong id="temp"> 0 </strong> F </h3>
+			<h3 class="temp2">Plant Temp: <strong id="temp2"> 0 </strong> F </h3>
 			<h3 class="hum">Humidity: <strong id="hum"> 0 </strong> % </h3>
+			<h3 class="moist">Moisture: <strong id="moist"> 0 </strong> % </h3>
 		</div>
 
 		<br>
@@ -291,8 +293,10 @@
 			function(_d, e) {
 
 				// Sets the temperature & humidity elements to the latest temperature & humidity
-				document.getElementById('temp').innerHTML = _d.temperature
+				document.getElementById('temp').innerHTML = _d.temp_c
 				document.getElementById('hum').innerHTML = _d.humidity
+				document.getElementById('moist').innerHTML = _d.moisture
+				document.getElementById('temp2').innerHTML = _d.plant_temp
 
 				data.push(_d) // adds to the data array array
 
