@@ -8,6 +8,10 @@
         {
             "res": ["I am $temp degrees"],
             "trigger": ["temperature", "temp"]
+        },
+        {
+            "res": ["I'm drowning please what is this monsoon season?", "I wish i lived in the sahara desert"],
+            "trigger": ["wet", "water", "drown", "thirsty"]
         }
 
     ]
