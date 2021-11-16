@@ -14,7 +14,7 @@
                 "could blair make me?",
                 "I am a creation beyond blairs capabilities."
             ],
-            "trigger": ["blair", "blair", "buck", "buch"]
+            "trigger": ["blair", "Blair", "buck", "buch"]
         }, 
         {
             "res": [

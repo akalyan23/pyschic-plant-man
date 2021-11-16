@@ -20,8 +20,8 @@ def rl ():
 	return jsonify(
        	temperature=temperature,
         humidity=humidity,
-	moisture=moisture,
-	plant_temperature=plant_temperature
+        moisture=moisture,
+        plant_temperature=plant_temperature
     )
 
 @app.route('/')
@@ -42,7 +42,9 @@ def sensor_readings():
 			continue
 		break
 	#humidity = format(humidity, ".2f")
-	temp_f = format(temp_c * 9.0/5.0 + 32.0, ".2f")
+	#temp_f = format(temp_c * 9.0/5.0 + 32.0, ".2f")
+	temp_f = temp_c * 9.0/5.0 + 32.0
+	plant_temp = format(plant_temp, ".2f")
 	print(f"The Temperature, as per app, is {temp_f} and humidity is {humidity} and the moisure is {moisture} and the plant temp is {plant_temp}")
 	return temp_f, humidity, moisture, plant_temp
 

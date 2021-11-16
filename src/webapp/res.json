@@ -2,7 +2,7 @@
 
     "commands": [
         { 
-            "res": ["I am burning up please help", "Fireeeeee"],
+            "res": ["I am doing well, now that you're here!", "Doing alright", "Epic gamer"],
             "trigger": ["feeling", "fire", "burn"]
         },
         {
