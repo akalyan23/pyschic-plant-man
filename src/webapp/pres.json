@@ -1,0 +1,15 @@
+{
+
+    "commands": [
+        {
+            "trigger": [
+                "pres"
+            ],
+            "res": [
+                "Hello, everyone. This is your plant speaking. Welcome to the 2021 Pie Plant Presentation, presented by Skye Kychenthal, Rohan Nunuganda, and Adithya Kalyan."
+            ]
+        }
+
+    ]
+
+}

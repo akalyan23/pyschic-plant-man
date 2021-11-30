@@ -4,6 +4,7 @@ import datetime
 import wikipedia
 from random import choice
 import json
+import os
 # import webbrowser
 # import os
 # import time
@@ -40,8 +41,8 @@ r=sr.Recognizer()
 # There is a array of triggers, if any of them are heard the "res" response is given
 # IE if the trigger is hello and the res is "hi, how are you?" when it hears hello it will respond with the res
 def loadCommands ():
-	#dr = "/Users/Nick/Desktop/pyschic-plant-man/src/webapp/res.json"
-	dr = "res.json"
+	dr = "/Users/Nick/Desktop/pyschic-plant-man/src/webapp/pres.json"
+	# dr = "res.json"
 	return json.load (open(dr))["commands"]
 
 # Skye Kychenthal
@@ -69,9 +70,9 @@ def speak(text):
 	"""
 	This function converts string text into speech
 	"""
-	
-	engine.say(text)
-	engine.runAndWait()
+	os.system(f"espeak -v f3 -p 50 -s 170 '{text}'") # Skye thinks this is the best voice
+	# engine.say(text)
+	# engine.runAndWait()
 	
 cmds = loadCommands() # short for commands
 
@@ -88,39 +89,39 @@ cmds = loadCommands() # short for commands
 # Rohan please comment
 def acceptCommand():
 	r=sr.Recognizer()
-	mic = sr.Microphone(device_index=2)
+	mic = sr.Microphone()
 	with mic as source:
 		print('Listening...') #Should replace this with an audio queue to let the user know that the ai is listening
-		audio=r.listen(source, None, 2)
+		audio=r.listen(source, None, 3.5)
 		try:
 			usercommand=r.recognize_google(audio,language="en-US")
-			print(f"user said: {usercommand}\n") #This is just for debugging right now. Prints in the terminal the user's command.
+			# print(f"user said: {usercommand}\n") #This is just for debugging right now. Prints in the terminal the user's command.
 
-			if "feeling" in usercommand:
-				if getPlantData.temperature > 60 and getPlantData.temperature < 80:
-					speak("I'm doing just fine sir. Thank you!")
-				elif getPlantData.temperature > 80:
-					speak("I'm dying, please help")
-				elif getPlantData.temperature < 60:
-					speak("Warm me up, please")
+			# if "feeling" in usercommand:
+			# 	if getPlantData.temperature > 60 and getPlantData.temperature < 80:
+			# 		speak("I'm doing just fine sir. Thank you!")
+			# 	elif getPlantData.temperature > 80:
+			# 		speak("I'm dying, please help")
+			# 	elif getPlantData.temperature < 60:
+			# 		speak("Warm me up, please")
 			
 
 
-			if "what is" in usercommand:
-				topic = (usercommand.split("what is ")[1])
-				results = wikipedia.summary(topic, 2, auto_suggest=False)
-				print(results)
+			# if "what is" in usercommand:
+			# 	topic = (usercommand.split("what is ")[1])
+			# 	results = wikipedia.summary(topic, 2, auto_suggest=False)
+			# 	print(results)
 
 			# If none of the custom commands work, go to the chatbot commands
-			else:
-				# Skye Kychenthal
-				# Iterates through commands and speaks the in to out values
-				for c in cmds: #looks at all command pairs in the cmds structure
-					for t in c['trigger']: # iterates through all triggers for the command
-						if t in usercommand: # t is the specific trigger for the a response
-							msg = checkForVar(choice(c['res']))
-							msgs.append(msg)
-							return speak (msg) # Speaks then returns so no more responses trigger. Checks for variables using checkForVar
+			
+			# Skye Kychenthal
+			# Iterates through commands and speaks the in to out values
+			for c in cmds: #looks at all command pairs in the cmds structure
+				for t in c['trigger']: # iterates through all triggers for the command
+					if t in usercommand: # t is the specific trigger for the a response
+						# msg = checkForVar(choice(c['res']))
+						# msgs.append(msg)
+						return speak (choice(c['res'])) # Speaks then returns so no more responses trigger. Checks for variables using checkForVar
 		
 
 		except Exception as e:
@@ -142,10 +143,7 @@ def getPlantData():
 
 #print(getPlantData())
 
-
-
+speak ("Plant booting up.")
 print(acceptCommand())
 
 # acceptCommand()
-
-
