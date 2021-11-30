@@ -4,7 +4,7 @@ import datetime
 import wikipedia
 from random import choice
 import json
-from app import sensor_readings 
+# from app import sensor_readings 
 	# The line above NEEDS to be uncommented. DO NOT push this version. 
 
 engine=pyttsx3.init()
@@ -18,8 +18,8 @@ engine.setProperty('voice', voices[0].id)
 # There is a array of triggers, if any of them are heard the "res" response is given
 # IE if the trigger is hello and the res is "hi, how are you?" when it hears hello it will respond with the res
 def loadCommands ():
-	#dr = "/Users/Nick/Desktop/pyschic-plant-man/src/webapp/res.json"
-	dr = "res.json"
+	dr = "/Users/Nick/Desktop/pyschic-plant-man/src/webapp/res.json"
+	# dr = "res.json"
 	return json.load (open(dr))["commands"]
 
 # Skye Kychenthal
@@ -128,7 +128,7 @@ def getPlantHumidity():
 #print(getPlantData())
 
 
-speak("Hello darling")
+speak("Hello Skye, how do you do?")
 #getPlantData()
 acceptCommand()
 
