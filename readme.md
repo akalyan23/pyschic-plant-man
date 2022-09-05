@@ -19,5 +19,5 @@ Created for Fall 2021 Computer Science Research @ [Peddie School](https://www.pe
 
 ## Authors
 @SkyMocha Skye Kychenthal
-Rohan Nunuganda
+Rohan Nunugonda
 Adithya Kalyan
